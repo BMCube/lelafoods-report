@@ -37,7 +37,7 @@ public class BatchConfig {
     public JdbcCursorItemReader<Cart> reader() {
         JdbcCursorItemReader<Cart> cursorItemReader = new JdbcCursorItemReader<>();
         cursorItemReader.setDataSource(dataSource);
-        cursorItemReader.setSql("SELECT * FROM cart where status = 'DELIVERED';");
+        cursorItemReader.setSql("SELECT * FROM cart where status = 'NEW';");
         cursorItemReader.setRowMapper(new CartRowMapper());
         return cursorItemReader;
     }
@@ -63,6 +63,7 @@ public class BatchConfig {
         return writer;
     }
 
+    //Reading the data one row at a time and Writing it in chunks size of 100
     @Bean
     public Step step1(){
         return stepBuilderFactory.get("step1").<Cart, Cart>chunk(100)
